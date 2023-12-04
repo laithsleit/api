@@ -238,6 +238,6 @@ if (isset($inputData['UserID'])) {
     echo json_encode(array("message" => "Please provide a valid UserID in the request."));
 }
 
-// This is a simplified example, and you should adapt it to your specific needs and architecture.
+
 
 ?>
