@@ -43,7 +43,7 @@ function getAllUsers()
 {
     global $mysqli;
 
-    $query = "SELECT * FROM users";
+    $query = "SELECT * FROM users WHERE RoleID 2";
     $result = $mysqli->query($query);
 
     $users = array();

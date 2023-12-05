@@ -9,51 +9,26 @@ class Product
         $this->mysqli = $mysqli;
     }
 
-     /**
-     * Search products by name.
-     *
-     * @param string $productName
-     * @return array Result of the search (success, products or message)
-     */
-
-    public function searchProductsByName($productName)
-    {
-        $query = "SELECT * FROM product WHERE Name LIKE ?";
-        $stmt = $this->mysqli->prepare($query);
-
-        if ($stmt) {
-            $productName = "%" . $productName . "%";
-            $stmt->bind_param('s', $productName);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result) {
-                $products = $result->fetch_all(MYSQLI_ASSOC);
-                return ["success" => true, "products" => $products];
-            } else {
-                return ["success" => false, "message" => "Failed to retrieve products"];
-            }
-        } else {
-            return ["success" => false, "message" => "Database error"];
-        }
-    }
-
-
-    
     /**
-     * Search products by category.
+     * Search products by parameters (name, category, or price range).
      *
-     * @param int $categoryID
+     * @param array $searchParameter The parameters to search for (name, categoryID, minPrice, maxPrice)
      * @return array Result of the search (success, products or message)
      */
-
-    public function searchProductsByCategory($categoryID)
+    public function searchProducts($searchParameter)
     {
-        $query = "SELECT * FROM product WHERE CategoryID = ?";
+        $query = "SELECT * FROM product WHERE 
+                  Name LIKE ? OR 
+                  CategoryID LIKE ? ";
         $stmt = $this->mysqli->prepare($query);
 
         if ($stmt) {
-            $stmt->bind_param('i', $categoryID);
+            // Assuming $searchParameter is an associative array
+            $name =  "%" . $searchParameter . "%" ;
+            $categoryID = "%" . $searchParameter . "%" ;
+            
+
+            $stmt->bind_param('ss', $name, $categoryID);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -67,38 +42,5 @@ class Product
             return ["success" => false, "message" => "Database error"];
         }
     }
-
-
-    /**
-     * Search products within a price range.
-     *
-     * @param float $minPrice
-     * @param float $maxPrice
-     * @return array Result of the search (success, products or message)
-     */
-    
-    public function searchProductsByPriceRange($minPrice, $maxPrice)
-    {
-        $query = "SELECT * FROM product WHERE Price >= ? AND Price <= ?";
-        $stmt = $this->mysqli->prepare($query);
-
-        if ($stmt) {
-            $stmt->bind_param('dd', $minPrice, $maxPrice);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result) {
-                $products = $result->fetch_all(MYSQLI_ASSOC);
-                return ["success" => true, "products" => $products];
-            } else {
-                return ["success" => false, "message" => "Failed to retrieve products"];
-            }
-        } else {
-            return ["success" => false, "message" => "Database error"];
-        }
-    }
-
-   
-
 }
 ?>

@@ -1,4 +1,19 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Content-Type: application/json");
+    exit();
+}
+
+// Rest of your existing code...
 
 // File: getProductById.php
 
@@ -26,13 +41,20 @@
 
 
 // Include the database connection file
+
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Include the database connection file
 include "../include.php";
 
 // CORS headers
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
+// CORS headers
+
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -91,5 +113,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(array("message" => "Invalid request method. Use GET or POST."));
 }
-
 ?>
