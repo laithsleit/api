@@ -23,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     echo json_encode(["success" => false, "message" => $_SERVER['REQUEST_METHOD'] ." is Invalid request method."]);
     exit;
 }
-$inputData = json_decode(file_get_contents("php://input"), true);
+// $inputData = json_decode(file_get_contents("php://input"), true);
 
 // Assuming you have the following data from the API request
-$productID = $inputData['productID'];
+// $productID = $inputData['productID'];
 
 // Create a new instance of the Review class
 $reviewObj = new Review($mysqli);
 
 // Get reviews with user details
-$result = $reviewObj->getReviewsWithUserDetails($productID);
+$result = $reviewObj->getReviewsWithUserDetails();
 
 // Return the result as JSON
 echo json_encode($result);

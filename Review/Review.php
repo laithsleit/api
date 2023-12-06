@@ -49,16 +49,17 @@ class Review
      * @param int $productID Product ID
      * @return array Result of the operation (success, reviews or message)
      */
-    public function getReviewsWithUserDetails($productID)
+    public function getReviewsWithUserDetails()
     {
         try {
             // Perform the database query to retrieve reviews with user details
-            $query = "SELECT r.*, u.Username
-                      FROM reviewsandratings r
-                      JOIN users u ON r.UserID = u.UserID
-                      WHERE r.ProductID = ?";
+            $query = "SELECT r.*, u.Username,p.Name AS ProductName
+            FROM reviewsandratings r
+            JOIN users u ON r.UserID = u.UserID
+            JOIN product p on r.ProductID = p.ProductID
+                      ";
             $stmt = $this->mysqli->prepare($query);
-            $stmt->bind_param("i", $productID);
+            // $stmt->bind_param("i", $productID);
             $stmt->execute();
             $result = $stmt->get_result();
 
